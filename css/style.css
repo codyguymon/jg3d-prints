@@ -578,6 +578,15 @@ a:hover {
     color: var(--color-text);
 }
 
+.print-price {
+    display: block;
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-accent);
+    margin-bottom: 8px;
+}
+
 .print-info p {
     color: var(--color-text-muted);
     font-size: 0.875rem;
