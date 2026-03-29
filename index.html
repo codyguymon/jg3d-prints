@@ -9,6 +9,96 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Center ALL product images consistently */
+        .print-image img {
+            object-position: center center !important;
+        }
+
+        /* Show full image without cropping - auto-size to photo's natural shape */
+        .print-image:has(.full-contain) {
+            aspect-ratio: auto;
+            padding: 8px;
+            background: #0a0a1a;
+        }
+        .print-image img.full-contain {
+            object-fit: contain !important;
+            width: 100%;
+            height: auto !important;
+            border-radius: 4px;
+        }
+        /* Balanced view - for very wide images, give more height so card matches others */
+        .print-image:has(.balanced) {
+            aspect-ratio: 4 / 3 !important;
+            background: #0a0a1a;
+        }
+        .print-image img.balanced {
+            height: 100% !important;
+        }
+
+        /* Carousel / Multi-view styles */
+        .carousel-container {
+            position: relative;
+            overflow: hidden;
+        }
+        .carousel-slide {
+            display: none;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .carousel-slide.full-contain {
+            object-fit: contain !important;
+            width: 100%;
+            height: auto !important;
+        }
+        .carousel-slide.active-slide {
+            display: block;
+        }
+        .carousel-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            border: none;
+            font-size: 1.5rem;
+            padding: 12px 16px;
+            cursor: pointer;
+            z-index: 10;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        .carousel-arrow:hover {
+            background: rgba(0, 0, 0, 0.85);
+        }
+        .carousel-prev {
+            left: 8px;
+        }
+        .carousel-next {
+            right: 8px;
+        }
+        .carousel-dots {
+            position: absolute;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 10;
+        }
+        .carousel-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .carousel-dot.active-dot {
+            background: #fff;
+        }
+    </style>
 </head>
 <body>
     <!-- Stars Background -->
@@ -20,7 +110,7 @@
     <nav class="nav">
         <div class="nav-container">
             <a href="#" class="nav-logo">
-                <img src="images/logo-transparent.png" alt="JG-3D Prints">
+                <img src="https://jg3dprints.com/images/logo-transparent.png" alt="JG-3D Prints">
             </a>
             <button class="nav-toggle" aria-label="Toggle menu">
                 <span></span>
@@ -38,7 +128,7 @@
     <!-- Hero Section -->
     <header class="hero">
         <div class="hero-content">
-            <img src="images/logo-transparent.png" alt="JG-3D Prints" class="hero-logo">
+            <img src="https://jg3dprints.com/images/logo-transparent.png" alt="JG-3D Prints" class="hero-logo">
             <h1 class="hero-title">JG-3D Prints</h1>
             <a href="#prints" class="btn btn-primary">See My Prints</a>
         </div>
@@ -55,11 +145,16 @@
                 <h2>3D Prints</h2>
                 <p class="section-subtitle">Check out some of my coolest creations. Want one? Hit the order button!</p>
             </div>
+            <div class="search-bar" style="max-width: 500px; margin: 0 auto 2rem; position: relative;">
+                <input type="text" id="printSearch" placeholder="Search prints (e.g. dragon, fidget, egg...)" style="width: 100%; padding: 12px 20px 12px 45px; border-radius: 30px; border: 2px solid rgba(110, 68, 255, 0.3); background: rgba(10, 10, 26, 0.8); color: #fff; font-size: 1rem; font-family: 'Inter', sans-serif; outline: none; transition: border-color 0.3s;">
+                <svg style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); opacity: 0.5;" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </div>
+            <p id="noResults" style="display: none; text-align: center; color: rgba(255,255,255,0.6); padding: 2rem; font-size: 1.1rem;">No prints found. Try a different search!</p>
             <div class="prints-grid">
                 <!-- Dragons -->
-                <div class="print-card">
+                <div class="print-card" data-tags="dragon articulated poseable flexible multicolor">
                     <div class="print-image">
-                        <img src="images/IMG_7828.jpg" alt="Articulated Dragon - Multi-color" class="full-view">
+                        <img src="https://jg3dprints.com/images/IMG_7828.jpg" alt="Articulated Dragon - Multi-color" class="full-view">
                     </div>
                     <div class="print-info">
                         <h3>Articulated Dragon</h3>
@@ -68,9 +163,9 @@
                         <a href="#contact" class="btn btn-small">Order This</a>
                     </div>
                 </div>
-                <div class="print-card">
+                <div class="print-card" data-tags="dragon baby cute small yellow">
                     <div class="print-image">
-                        <img src="images/IMG_7822.jpg" alt="Baby Dragon - Yellow" class="center-bottom">
+                        <img src="https://jg3dprints.com/images/IMG_7822.jpg" alt="Baby Dragon - Yellow" class="full-contain">
                     </div>
                     <div class="print-info">
                         <h3>Baby Dragon</h3>
@@ -79,9 +174,9 @@
                         <a href="#contact" class="btn btn-small">Order This</a>
                     </div>
                 </div>
-                <div class="print-card">
+                <div class="print-card" data-tags="dragon chinese articulated detailed asian">
                     <div class="print-image">
-                        <img src="images/IMG_8214.jpg" alt="Chinese Dragon - Yellow/Brown" class="center-bottom">
+                        <img src="https://jg3dprints.com/images/IMG_8214.jpg" alt="Chinese Dragon - Yellow/Brown" class="full-contain">
                     </div>
                     <div class="print-info">
                         <h3>Chinese Dragon</h3>
@@ -90,9 +185,9 @@
                         <a href="#contact" class="btn btn-small">Order This</a>
                     </div>
                 </div>
-                <div class="print-card">
+                <div class="print-card" data-tags="dragon basic articulated simple red">
                     <div class="print-image">
-                        <img src="images/IMG_8344.jpg" alt="Basic Dragon - Red">
+                        <img src="https://jg3dprints.com/images/IMG_8344.jpg" alt="Basic Dragon - Red">
                     </div>
                     <div class="print-info">
                         <h3>Basic Dragon</h3>
@@ -101,10 +196,96 @@
                         <a href="#contact" class="btn btn-small">Order This</a>
                     </div>
                 </div>
-                <!-- Croc Charms -->
-                <div class="print-card">
+
+                <!-- NEW: Deep Space Lizard -->
+                <div class="print-card" data-tags="dragon lizard deep space rainbow iridescent baby">
                     <div class="print-image">
-                        <img src="images/IMG_8211.jpg" alt="Harry Potter Sorting Hat Croc Charm - Silver/Gold">
+                        <img src="images/IMG_0030.jpg" alt="Deep Space Lizard - Rainbow Iridescent" class="full-contain">
+                    </div>
+                    <div class="print-info">
+                        <h3>Deep Space Lizard</h3>
+                        <span class="print-price">$11</span>
+                        <p>Stunning rainbow iridescent articulated baby dragon</p>
+                        <a href="#contact" class="btn btn-small">Order This</a>
+                    </div>
+                </div>
+
+                <!-- NEW: Skeleton Dragon -->
+                <div class="print-card" data-tags="dragon skeleton spooky bone black white">
+                    <div class="print-image">
+                        <img src="images/IMG_0046.jpg" alt="Skeleton Dragon - Black and White">
+                    </div>
+                    <div class="print-info">
+                        <h3>Skeleton Dragon</h3>
+                        <span class="print-price">$2.50</span>
+                        <p>Spooky articulated skeleton dragon, black and white</p>
+                        <a href="#contact" class="btn btn-small">Order This</a>
+                    </div>
+                </div>
+
+                <!-- NEW: Mini Dream Dragon -->
+                <div class="print-card" data-tags="dragon baby mini dream tiny cute small">
+                    <div class="print-image">
+                        <img src="images/IMG_0045.jpg" alt="Mini Dream Dragon - Gray and Yellow">
+                    </div>
+                    <div class="print-info">
+                        <h3>Mini Dream Dragon</h3>
+                        <span class="print-price">$2.50</span>
+                        <p>Tiny baby dream dragon, super cute and detailed</p>
+                        <a href="#contact" class="btn btn-small">Order This</a>
+                    </div>
+                </div>
+
+                <!-- NEW: Deep Space Storm Fang (multi-view carousel) -->
+                <div class="print-card" data-tags="dragon deep space storm fang winged gargoyle big large">
+                    <div class="print-image carousel-container" data-carousel>
+                        <img src="images/IMG_0032.jpg" alt="Deep Space Storm Fang - Red/Purple/Gold" class="carousel-slide active-slide full-contain">
+                        <img src="images/IMG_0034.jpg" alt="Deep Space Storm Fang - Dark Black" class="carousel-slide full-contain">
+                        <button class="carousel-arrow carousel-prev" onclick="changeSlide(this, -1)">&#10094;</button>
+                        <button class="carousel-arrow carousel-next" onclick="changeSlide(this, 1)">&#10095;</button>
+                        <div class="carousel-dots">
+                            <span class="carousel-dot active-dot" onclick="goToSlide(this, 0)"></span>
+                            <span class="carousel-dot" onclick="goToSlide(this, 1)"></span>
+                        </div>
+                    </div>
+                    <div class="print-info">
+                        <h3>Deep Space Storm Fang</h3>
+                        <span class="print-price">$11</span>
+                        <p>Massive winged articulated dragon, available in multiple colors</p>
+                        <a href="#contact" class="btn btn-small">Order This</a>
+                    </div>
+                </div>
+
+                <!-- NEW: Stone Gargoyle -->
+                <div class="print-card" data-tags="dragon gargoyle stone winged gray white">
+                    <div class="print-image">
+                        <img src="images/IMG_0041.jpg" alt="Stone Gargoyle - White/Gray" class="full-contain">
+                    </div>
+                    <div class="print-info">
+                        <h3>Stone Gargoyle</h3>
+                        <span class="print-price">$11</span>
+                        <p>Winged articulated gargoyle dragon in sleek gray</p>
+                        <a href="#contact" class="btn btn-small">Order This</a>
+                    </div>
+                </div>
+
+                <!-- NEW: Electric Gargoyle -->
+                <div class="print-card" data-tags="dragon gargoyle electric winged yellow">
+                    <div class="print-image">
+                        <img src="images/IMG_0044.jpg" alt="Electric Gargoyle - Yellow" class="full-contain balanced">
+                    </div>
+                    <div class="print-info">
+                        <h3>Electric Gargoyle</h3>
+                        <span class="print-price">$11</span>
+                        <p>Epic yellow winged articulated dragon, fully poseable</p>
+                        <a href="#contact" class="btn btn-small">Order This</a>
+                    </div>
+                </div>
+
+                <!-- Croc Charms -->
+                <div class="print-card" data-tags="croc charm harry potter sorting hat shoe accessory">
+                    <div class="print-image">
+                        <img src="https://jg3dprints.com/images/IMG_8211.jpg" alt="Harry Potter Sorting Hat Croc Charm - Silver/Gold">
                     </div>
                     <div class="print-info">
                         <h3>Harry Potter Sorting Hat Croc Charm</h3>
@@ -113,9 +294,9 @@
                         <a href="#contact" class="btn btn-small">Order This</a>
                     </div>
                 </div>
-                <div class="print-card">
+                <div class="print-card" data-tags="croc charm shrek shoe accessory green">
                     <div class="print-image">
-                        <img src="images/IMG_8212.jpg" alt="Shrek Croc Charm - Green">
+                        <img src="https://jg3dprints.com/images/IMG_8212.jpg" alt="Shrek Croc Charm - Green">
                     </div>
                     <div class="print-info">
                         <h3>Shrek Croc Charm</h3>
@@ -124,9 +305,9 @@
                         <a href="#contact" class="btn btn-small">Order This</a>
                     </div>
                 </div>
-                <div class="print-card">
+                <div class="print-card" data-tags="croc charm pickle shoe accessory green cute">
                     <div class="print-image">
-                        <img src="images/IMG_8213.jpg" alt="Pickle Croc Charm - Green">
+                        <img src="https://jg3dprints.com/images/IMG_8213.jpg" alt="Pickle Croc Charm - Green">
                     </div>
                     <div class="print-info">
                         <h3>Pickle Croc Charm</h3>
@@ -135,9 +316,9 @@
                         <a href="#contact" class="btn btn-small">Order This</a>
                     </div>
                 </div>
-                <div class="print-card">
+                <div class="print-card" data-tags="croc charm the rock dwayne johnson shoe accessory wrestling">
                     <div class="print-image">
-                        <img src="images/IMG_8345.jpg" alt="The Rock Croc Charm - Blue">
+                        <img src="https://jg3dprints.com/images/IMG_8345.jpg" alt="The Rock Croc Charm - Blue">
                     </div>
                     <div class="print-info">
                         <h3>The Rock Croc Charm</h3>
@@ -146,10 +327,11 @@
                         <a href="#contact" class="btn btn-small">Order This</a>
                     </div>
                 </div>
+
                 <!-- Fidgets -->
-                <div class="print-card">
+                <div class="print-card" data-tags="fidget spiral cone decoration toy">
                     <div class="print-image">
-                        <img src="images/IMG_7819.jpg" alt="Spiral Fidget Cone - Blue/Orange" class="center-adjusted">
+                        <img src="https://jg3dprints.com/images/IMG_7819.jpg" alt="Spiral Fidget Cone - Blue/Orange" class="center-adjusted">
                     </div>
                     <div class="print-info">
                         <h3>Spiral Fidget Cone</h3>
@@ -158,9 +340,9 @@
                         <a href="#contact" class="btn btn-small">Order This</a>
                     </div>
                 </div>
-                <div class="print-card">
+                <div class="print-card" data-tags="fidget hexagon spiral geometric toy">
                     <div class="print-image">
-                        <img src="images/IMG_8207.jpg" alt="Geometric Hexagon Fidget - Red">
+                        <img src="https://jg3dprints.com/images/IMG_8207.jpg" alt="Geometric Hexagon Fidget - Red">
                     </div>
                     <div class="print-info">
                         <h3>Hexagon Spiral</h3>
@@ -169,9 +351,9 @@
                         <a href="#contact" class="btn btn-small">Order This</a>
                     </div>
                 </div>
-                <div class="print-card">
+                <div class="print-card" data-tags="fidget toy 12 in 1 multi black">
                     <div class="print-image">
-                        <img src="images/IMG_8340.jpg" alt="12-in-1 Fidget Toy - Black">
+                        <img src="https://jg3dprints.com/images/IMG_8340.jpg" alt="12-in-1 Fidget Toy - Black">
                     </div>
                     <div class="print-info">
                         <h3>12-in-1 Fidget Toy</h3>
@@ -180,9 +362,9 @@
                         <a href="#contact" class="btn btn-small">Order This</a>
                     </div>
                 </div>
-                <div class="print-card">
+                <div class="print-card" data-tags="fidget roller hand spin toy">
                     <div class="print-image">
-                        <img src="images/IMG_8343.jpg" alt="Roller Hand Fidget - Red/White">
+                        <img src="https://jg3dprints.com/images/IMG_8343.jpg" alt="Roller Hand Fidget - Red/White">
                     </div>
                     <div class="print-info">
                         <h3>Roller Hand Fidget</h3>
@@ -191,10 +373,11 @@
                         <a href="#contact" class="btn btn-small">Order This</a>
                     </div>
                 </div>
+
                 <!-- Characters & Creatures -->
-                <div class="print-card">
+                <div class="print-card" data-tags="demogorgon stranger things monster creature character">
                     <div class="print-image">
-                        <img src="images/IMG_7824.jpg" alt="Demogorgon from Stranger Things">
+                        <img src="https://jg3dprints.com/images/IMG_7824.jpg" alt="Demogorgon from Stranger Things">
                     </div>
                     <div class="print-info">
                         <h3>Demogorgon</h3>
@@ -203,9 +386,9 @@
                         <a href="#contact" class="btn btn-small">Order This</a>
                     </div>
                 </div>
-                <div class="print-card">
+                <div class="print-card" data-tags="spider bug insect creature creepy">
                     <div class="print-image">
-                        <img src="images/IMG_7821.jpg" alt="Spider - Red">
+                        <img src="https://jg3dprints.com/images/IMG_7821.jpg" alt="Spider - Red">
                     </div>
                     <div class="print-info">
                         <h3>Spider</h3>
@@ -214,9 +397,9 @@
                         <a href="#contact" class="btn btn-small">Order This</a>
                     </div>
                 </div>
-                <div class="print-card">
+                <div class="print-card" data-tags="dinosaur dino mini cute creature animal">
                     <div class="print-image">
-                        <img src="images/IMG_8341.jpg" alt="Mini Dinosaur - Green and Red">
+                        <img src="https://jg3dprints.com/images/IMG_8341.jpg" alt="Mini Dinosaur - Green and Red">
                     </div>
                     <div class="print-info">
                         <h3>Mini Dinosaur</h3>
@@ -225,9 +408,9 @@
                         <a href="#contact" class="btn btn-small">Order This</a>
                     </div>
                 </div>
-                <div class="print-card">
+                <div class="print-card" data-tags="octopus easter island head creature fun">
                     <div class="print-image">
-                        <img src="images/IMG_8342.jpg" alt="Easter Island Octopus Head - Orange/Red">
+                        <img src="https://jg3dprints.com/images/IMG_8342.jpg" alt="Easter Island Octopus Head - Orange/Red">
                     </div>
                     <div class="print-info">
                         <h3>Easter Island Octopus Head</h3>
@@ -236,10 +419,50 @@
                         <a href="#contact" class="btn btn-small">Order This</a>
                     </div>
                 </div>
-                <!-- Other Cool Stuff -->
-                <div class="print-card">
+
+                <!-- NEW: Mini Rhino -->
+                <div class="print-card" data-tags="rhino animal mini cute articulated">
                     <div class="print-image">
-                        <img src="images/IMG_3402.jpg" alt="Hoodie Can Holder - Green">
+                        <img src="images/IMG_0042.jpg" alt="Mini Rhino - White">
+                    </div>
+                    <div class="print-info">
+                        <h3>Mini Rhino</h3>
+                        <span class="print-price">$3.50</span>
+                        <p>Cute articulated mini rhino, available in multiple colors</p>
+                        <a href="#contact" class="btn btn-small">Order This</a>
+                    </div>
+                </div>
+
+                <!-- NEW: Deep Space Snake -->
+                <div class="print-card" data-tags="snake worm deep space rainbow iridescent articulated">
+                    <div class="print-image">
+                        <img src="images/IMG_0035.jpg" alt="Deep Space Snake - Rainbow">
+                    </div>
+                    <div class="print-info">
+                        <h3>Deep Space Snake</h3>
+                        <span class="print-price">$6</span>
+                        <p>Articulated rainbow worm with amazing iridescent colors</p>
+                        <a href="#contact" class="btn btn-small">Order This</a>
+                    </div>
+                </div>
+
+                <!-- NEW: Electric Viper -->
+                <div class="print-card" data-tags="snake viper electric yellow articulated long">
+                    <div class="print-image">
+                        <img src="images/IMG_0043.jpg" alt="Electric Viper - Yellow" class="full-contain balanced">
+                    </div>
+                    <div class="print-info">
+                        <h3>Electric Viper</h3>
+                        <span class="print-price">$13</span>
+                        <p>Long articulated viper snake, flexible and poseable</p>
+                        <a href="#contact" class="btn btn-small">Order This</a>
+                    </div>
+                </div>
+
+                <!-- Other Cool Stuff -->
+                <div class="print-card" data-tags="hoodie can holder drink cup practical">
+                    <div class="print-image">
+                        <img src="https://jg3dprints.com/images/IMG_3402.jpg" alt="Hoodie Can Holder - Green">
                     </div>
                     <div class="print-info">
                         <h3>Hoodie Can Holder</h3>
@@ -248,9 +471,9 @@
                         <a href="#contact" class="btn btn-small">Order This</a>
                     </div>
                 </div>
-                <div class="print-card">
+                <div class="print-card" data-tags="knot tying board scouts outdoor practical learn">
                     <div class="print-image">
-                        <img src="images/IMG_8205.jpg" alt="Knot Tying Board">
+                        <img src="https://jg3dprints.com/images/IMG_8205.jpg" alt="Knot Tying Board">
                     </div>
                     <div class="print-info">
                         <h3>Knot Tying Board</h3>
@@ -259,9 +482,9 @@
                         <a href="#contact" class="btn btn-small">Order This</a>
                     </div>
                 </div>
-                <div class="print-card">
+                <div class="print-card" data-tags="container waterproof outdoor geocache practical storage">
                     <div class="print-image">
-                        <img src="images/IMG_8208.jpg" alt="Outdoor Waterproof Container - Silver">
+                        <img src="https://jg3dprints.com/images/IMG_8208.jpg" alt="Outdoor Waterproof Container - Silver">
                     </div>
                     <div class="print-info">
                         <h3>Outdoor Waterproof Container</h3>
@@ -270,9 +493,9 @@
                         <a href="#contact" class="btn btn-small">Order This</a>
                     </div>
                 </div>
-                <div class="print-card">
+                <div class="print-card" data-tags="star spiral geometric decoration cool">
                     <div class="print-image">
-                        <img src="images/IMG_8347.jpg" alt="Spiral Star - Black">
+                        <img src="https://jg3dprints.com/images/IMG_8347.jpg" alt="Spiral Star - Black">
                     </div>
                     <div class="print-info">
                         <h3>Spiral Star</h3>
@@ -281,6 +504,66 @@
                         <a href="#contact" class="btn btn-small">Order This</a>
                     </div>
                 </div>
+
+                <!-- NEW: Zelda Switch Holder -->
+                <div class="print-card" data-tags="zelda nintendo switch holder triforce gaming game video">
+                    <div class="print-image">
+                        <img src="images/IMG_0040.jpg" alt="Zelda Switch Holder - Black with Gold Triforce">
+                    </div>
+                    <div class="print-info">
+                        <h3>Zelda Switch Holder</h3>
+                        <span class="print-price">$5</span>
+                        <p>Legend of Zelda Triforce Nintendo Switch game holder</p>
+                        <a href="#contact" class="btn btn-small">Order This</a>
+                    </div>
+                </div>
+
+                <!-- NEW: Mystery Eggs -->
+                <div class="print-card" data-tags="mystery egg electric element golden dragon scale texture secret">
+                    <div class="print-image">
+                        <img src="images/IMG_0036.jpg" alt="Electric Element Mystery Egg - Golden">
+                    </div>
+                    <div class="print-info">
+                        <h3>Electric Element Mystery Egg</h3>
+                        <span class="print-price">$12</span>
+                        <p>What ancient element lies sealed within? This shimmering golden egg pulses with hidden energy — crack it open to discover the secret inside</p>
+                        <a href="#contact" class="btn btn-small">Order This</a>
+                    </div>
+                </div>
+                <div class="print-card" data-tags="mystery egg water element blue dragon scale texture secret ocean">
+                    <div class="print-image">
+                        <img src="images/IMG_0037.jpg" alt="Water Element Mystery Egg - Blue">
+                    </div>
+                    <div class="print-info">
+                        <h3>Water Element Mystery Egg</h3>
+                        <span class="print-price">$15</span>
+                        <p>A deep ocean blue egg radiating mysterious aquatic power — no one knows what creature lurks within until you open it</p>
+                        <a href="#contact" class="btn btn-small">Order This</a>
+                    </div>
+                </div>
+                <div class="print-card" data-tags="mystery egg deep space element multicolor dragon scale texture secret cosmic iridescent">
+                    <div class="print-image">
+                        <img src="images/IMG_0038.jpg" alt="Deep Space Element Mystery Egg - Multicolor">
+                    </div>
+                    <div class="print-info">
+                        <h3>Deep Space Element Mystery Egg</h3>
+                        <span class="print-price">$30</span>
+                        <p>Forged from the void of deep space, this rare iridescent egg holds a secret no one has uncovered — what cosmic creature waits inside?</p>
+                        <a href="#contact" class="btn btn-small">Order This</a>
+                    </div>
+                </div>
+                <div class="print-card" data-tags="mystery egg elemental set collection dragon scale texture secret all three">
+                    <div class="print-image">
+                        <img src="images/IMG_0039.jpg" alt="Elemental Mystery Egg Set - All Sizes" class="full-contain">
+                    </div>
+                    <div class="print-info">
+                        <h3>Elemental Mystery Egg Set</h3>
+                        <span class="print-price">$50</span>
+                        <p>The ultimate mystery collection — all three elemental eggs in small, medium, and large. Three sealed secrets, three unknown creatures. Will you unlock them all?</p>
+                        <a href="#contact" class="btn btn-small">Order This</a>
+                    </div>
+                </div>
+
             </div>
             <div class="prints-cta">
                 <p>Don't see what you're looking for? I can make tons of different prints!</p>
@@ -308,8 +591,8 @@
                     <div class="setup-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="13.5" cy="6.5" r="2.5"/><circle cx="19" cy="17" r="2"/><circle cx="6" cy="12" r="3"/><path d="M13.5 9v2.5l3 3"/><path d="M6 15v4"/><path d="M6 9V7"/></svg>
                     </div>
-                    <h3>Bambu Lab Filament</h3>
-                    <p>I only use official Bambu Lab filament for the best quality prints. I've got a TON of colors to choose from!</p>
+                    <h3>PLA Filament</h3>
+                    <p>All my prints use premium PLA filament — it has super low shrinkage, amazing dimensional accuracy, and comes in a huge range of colors. PLA is also eco-friendly and biodegradable, making it one of the best materials for detailed, high-quality 3D prints!</p>
                 </div>
                 <div class="setup-card">
                     <div class="setup-icon">
@@ -386,6 +669,15 @@
                             <label class="checkbox-label"><input type="checkbox" name="order" value="Baby Dragon ($3.50)"> Baby Dragon - $3.50</label>
                             <label class="checkbox-label"><input type="checkbox" name="order" value="Chinese Dragon ($3)"> Chinese Dragon - $3</label>
                             <label class="checkbox-label"><input type="checkbox" name="order" value="Basic Dragon ($4)"> Basic Dragon - $4</label>
+                            <label class="checkbox-label"><input type="checkbox" name="order" value="Deep Space Lizard ($11)"> Deep Space Lizard - $11</label>
+                            <label class="checkbox-label"><input type="checkbox" name="order" value="Skeleton Dragon ($2.50)"> Skeleton Dragon - $2.50</label>
+                            <label class="checkbox-label"><input type="checkbox" name="order" value="Mini Dream Dragon ($2.50)"> Mini Dream Dragon - $2.50</label>
+                            <label class="checkbox-label"><input type="checkbox" name="order" value="Deep Space Storm Fang ($11)"> Deep Space Storm Fang - $11</label>
+                            <label class="checkbox-label"><input type="checkbox" name="order" value="Stone Gargoyle ($11)"> Stone Gargoyle - $11</label>
+                            <label class="checkbox-label"><input type="checkbox" name="order" value="Electric Gargoyle ($11)"> Electric Gargoyle - $11</label>
+                            <label class="checkbox-label"><input type="checkbox" name="order" value="Electric Viper ($13)"> Electric Viper - $13</label>
+                            <label class="checkbox-label"><input type="checkbox" name="order" value="Deep Space Snake ($6)"> Deep Space Snake - $6</label>
+                            <label class="checkbox-label"><input type="checkbox" name="order" value="Mini Rhino ($3.50)"> Mini Rhino - $3.50</label>
                             <label class="checkbox-label"><input type="checkbox" name="order" value="Sorting Hat Croc Charm ($1)"> Sorting Hat Croc Charm - $1</label>
                             <label class="checkbox-label"><input type="checkbox" name="order" value="Shrek Croc Charm ($1)"> Shrek Croc Charm - $1</label>
                             <label class="checkbox-label"><input type="checkbox" name="order" value="Pickle Croc Charm ($1)"> Pickle Croc Charm - $1</label>
@@ -402,21 +694,12 @@
                             <label class="checkbox-label"><input type="checkbox" name="order" value="Knot Tying Board ($3)"> Knot Tying Board - $3</label>
                             <label class="checkbox-label"><input type="checkbox" name="order" value="Outdoor Waterproof Container ($2)"> Outdoor Waterproof Container - $2</label>
                             <label class="checkbox-label"><input type="checkbox" name="order" value="Spiral Star ($6)"> Spiral Star - $6</label>
+                            <label class="checkbox-label"><input type="checkbox" name="order" value="Zelda Switch Holder ($5)"> Zelda Switch Holder - $5</label>
+                            <label class="checkbox-label"><input type="checkbox" name="order" value="Electric Element Mystery Egg ($12)"> Electric Element Mystery Egg - $12</label>
+                            <label class="checkbox-label"><input type="checkbox" name="order" value="Water Element Mystery Egg ($15)"> Water Element Mystery Egg - $15</label>
+                            <label class="checkbox-label"><input type="checkbox" name="order" value="Deep Space Element Mystery Egg ($30)"> Deep Space Element Mystery Egg - $30</label>
+                            <label class="checkbox-label"><input type="checkbox" name="order" value="Elemental Mystery Egg Set ($50)"> Elemental Mystery Egg Set - $50</label>
                             <label class="checkbox-label"><input type="checkbox" name="order" value="Something Else"> Something Else (describe below)</label>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Preferred Color(s)</label>
-                        <div class="color-checkboxes">
-                            <label class="checkbox-label"><input type="checkbox" name="color" value="red"> Red</label>
-                            <label class="checkbox-label"><input type="checkbox" name="color" value="blue"> Blue</label>
-                            <label class="checkbox-label"><input type="checkbox" name="color" value="green"> Green</label>
-                            <label class="checkbox-label"><input type="checkbox" name="color" value="black"> Black</label>
-                            <label class="checkbox-label"><input type="checkbox" name="color" value="white"> White</label>
-                            <label class="checkbox-label"><input type="checkbox" name="color" value="yellow"> Yellow</label>
-                            <label class="checkbox-label"><input type="checkbox" name="color" value="orange"> Orange</label>
-                            <label class="checkbox-label"><input type="checkbox" name="color" value="brown"> Brown</label>
-                            <label class="checkbox-label"><input type="checkbox" name="color" value="gray"> Gray</label>
                         </div>
                     </div>
                     <div class="form-group">
@@ -429,7 +712,7 @@
         </div>
     </section>
 
-    <!-- About Section (moved to bottom) -->
+    <!-- About Section -->
     <section id="about" class="section about">
         <div class="container">
             <div class="section-header section-header-center">
@@ -466,7 +749,7 @@
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
-                <img src="images/logo-transparent.png" alt="JG-3D Prints" class="footer-logo">
+                <img src="https://jg3dprints.com/images/logo-transparent.png" alt="JG-3D Prints" class="footer-logo">
                 <p>Custom 3D prints made by Jack, a 12-year-old entrepreneur from Utah.</p>
                 <div class="footer-links">
                     <a href="#prints">Prints</a>
@@ -481,5 +764,68 @@
     </footer>
 
     <script src="js/main.js"></script>
+    <script>
+        function changeSlide(btn, direction) {
+            const container = btn.closest('.carousel-container');
+            const slides = container.querySelectorAll('.carousel-slide');
+            const dots = container.querySelectorAll('.carousel-dot');
+            let current = Array.from(slides).findIndex(s => s.classList.contains('active-slide'));
+            slides[current].classList.remove('active-slide');
+            dots[current].classList.remove('active-dot');
+            current = (current + direction + slides.length) % slides.length;
+            slides[current].classList.add('active-slide');
+            dots[current].classList.add('active-dot');
+        }
+        function goToSlide(dot, index) {
+            const container = dot.closest('.carousel-container');
+            const slides = container.querySelectorAll('.carousel-slide');
+            const dots = container.querySelectorAll('.carousel-dot');
+            slides.forEach(s => s.classList.remove('active-slide'));
+            dots.forEach(d => d.classList.remove('active-dot'));
+            slides[index].classList.add('active-slide');
+            dots[index].classList.add('active-dot');
+        }
+
+        // Touch/swipe support for mobile
+        document.querySelectorAll('[data-carousel]').forEach(container => {
+            let startX = 0;
+            container.addEventListener('touchstart', e => { startX = e.touches[0].clientX; });
+            container.addEventListener('touchend', e => {
+                const diff = startX - e.changedTouches[0].clientX;
+                if (Math.abs(diff) > 50) {
+                    const btn = container.querySelector(diff > 0 ? '.carousel-next' : '.carousel-prev');
+                    changeSlide(btn, diff > 0 ? 1 : -1);
+                }
+            });
+        });
+
+        // Search bar functionality
+        const searchInput = document.getElementById('printSearch');
+        const noResults = document.getElementById('noResults');
+        searchInput.addEventListener('input', function() {
+            const query = this.value.toLowerCase().trim();
+            const cards = document.querySelectorAll('.print-card');
+            let visibleCount = 0;
+            cards.forEach(card => {
+                if (!query) {
+                    card.style.display = '';
+                    visibleCount++;
+                    return;
+                }
+                const name = card.querySelector('h3').textContent.toLowerCase();
+                const desc = card.querySelector('p') ? card.querySelector('p').textContent.toLowerCase() : '';
+                const tags = (card.dataset.tags || '').toLowerCase();
+                const searchText = name + ' ' + desc + ' ' + tags;
+                const words = query.split(/\s+/);
+                const match = words.every(w => searchText.includes(w));
+                card.style.display = match ? '' : 'none';
+                if (match) visibleCount++;
+            });
+            noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+        });
+        // Focus style for search bar
+        searchInput.addEventListener('focus', function() { this.style.borderColor = 'rgba(110, 68, 255, 0.7)'; });
+        searchInput.addEventListener('blur', function() { this.style.borderColor = 'rgba(110, 68, 255, 0.3)'; });
+    </script>
 </body>
 </html>
