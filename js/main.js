@@ -78,6 +78,17 @@ document.addEventListener('DOMContentLoaded', function() {
         el.classList.add('fade-in');
         observer.observe(el);
     });
+
+    // Combine multi-select checkboxes into a single field before submission
+    const orderForm = document.getElementById('order-form');
+    if (orderForm) {
+        orderForm.addEventListener('submit', function() {
+            const checked = orderForm.querySelectorAll('input[name="order"]:checked');
+            const items = Array.from(checked).map(cb => cb.value);
+            document.getElementById('selected-items-hidden').value = items.join(', ');
+            checked.forEach(cb => cb.removeAttribute('name'));
+        });
+    }
 });
 
 // Add CSS for fade-in animation
