@@ -83,10 +83,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const orderForm = document.getElementById('order-form');
     if (orderForm) {
         orderForm.addEventListener('submit', function() {
-            const checked = orderForm.querySelectorAll('input[name="order"]:checked');
+            const checked = orderForm.querySelectorAll('input[data-order]:checked');
             const items = Array.from(checked).map(cb => cb.value);
             document.getElementById('selected-items-hidden').value = items.join(', ');
-            checked.forEach(cb => cb.removeAttribute('name'));
         });
     }
 });
